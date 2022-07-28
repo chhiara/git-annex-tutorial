@@ -61,10 +61,11 @@ git commit -m "added train folder"
 
 The files can be renamed, deleted and moved with the usual git commands. Once the modifications are committed the corresponding symlinks are updated so that the files can be retrieved without errors.
 Example:
+ 
 ```shell  
 git mv train/ test/
 git commit -m "renamed folder"
- ```
+```
 ## using ssh remotes
 Enter on your remote machine using ssh:
 ```shell  
@@ -72,17 +73,39 @@ ssh user@<remote-ip>
 ```
   
 Clone the repository from the local to the remote host. Let's assume the remote machine on which you are cloning the repository is hosted by your instituition and it ussually called clusterone. You may want to add this name in the description of the repository in the init command, to easily indetify it in the future: 
+ 
 ```shell  
 git clone user@<local-ip>:trial-annex trial-annex/
 git annex init "remote clusterone gitannex"
 ```
+ 
 Then, it is useful to add the repository on your local machine as git remote. Let's call your local machine mydesktop
 ```shell  
 git remote add my-desktop user@<local-ip>:trial-annex/
 ```
-The same 
+ 
+The same should be done in the reository on yout local machine: Clusterone has to be added as git remote.
+```shell  
+git remote add clusterone user@<remote-ip>:/home/user/trial-annex/
+```
+It is possible that you type incorrectly the path to your remotes in the previous commands. If this happens, it is necessary only to remove the remote and re-define it. To remove the remote:
+```shell  
+git remote remove <name-remote>
+```
 
-git-annex info
+"Notice that these repos are set up as remotes of one another. This lets either get annexed files from the other. You'll often want to do that even when you are using git in a more centralized fashion."
+ 
+Now in the repository in clusterone the actual files are not stored. Each file is a broken symlink that points to.. anything. 
+To get the actual contents of the repository it is necessary to synchronize the content on clusterone with the local repository. So on clusterone let's type:
+```shell  
+git annex sync my-desktop
+```  
+After we add files in clusterone, on the contrary we may need to synchronize the content on your local machine. So it is sufficient to type inside the repo on you local machine:
+```shell  
+git annex sync clusterone
+```  
+ 
+
   
 References:
  * [https://git-annex.branchable.com/walkthrough/](https://git-annex.branchable.com/walkthrough/)
