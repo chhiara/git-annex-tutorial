@@ -5,6 +5,7 @@ This brief tutorial is intended as illustrate the use-of-case of decentralized d
 * git
 * Linux shell 
 * ssh
+
 In it is assumed git is installed and you have to already have setted a remote connection with ssh between a remote and local machine.
 The shell commands reported in this tutorial were run in Ubuntu20.04, the git-annex version used is 8.20200226, while git version used was 2.25.1 
 
