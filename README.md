@@ -96,7 +96,7 @@ git remote remove <name-remote>
 
 "Notice that these repos are set up as remotes of one another. This lets either get annexed files from the other. You'll often want to do that even when you are using git in a more centralized fashion."
  
-Now in the repository in clusterone the actual files are not stored. Each file is a broken symlink that points to.. anything. 
+Now in the repository in clusterone the actual files are not stored. Each file is a broken symlink that points to.. nothing. 
 To get the actual contents of the repository it is necessary to synchronize the content on clusterone with the local repository. So on clusterone let's type:
 ```shell  
 git annex sync my-desktop
