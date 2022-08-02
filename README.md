@@ -1,12 +1,12 @@
 # git-annex Tutorial
-git-annex is a software based on git infrastructure to manage the versioning and the sharing of the files. While git is intended for small text files (typically text containing code), git-annex is designed for bigger files and, in general, for whole datasets. It eases the data sharing between different users, or between different hardware of the same user. The whole documentation is available on the [official git-annex website](https://git-annex.branchable.com/).
+git-annex is a software based on git's infrastructure to manage the versioning and the sharing of the files. While git is intended for small text files (typically text containing code), git-annex is designed for bigger files and, in general, for whole datasets. It eases the data sharing between different users, or between different hardware of the same user. The whole documentation is available on the [official git-annex website](https://git-annex.branchable.com/).
 
-This brief tutorial is intended as illustrate the use-of-case of decentralized data sharing, where each machine is connected via ssh. **what is decentralized data sharing**. The tutorial assumes familiarity with:
+This brief tutorial aims at illustrating the use-of-case of decentralized data sharing, where each machine is connected via ssh. **what is decentralized data sharing**. The tutorial assumes familiarity with:
 * git
 * Linux shell 
 * ssh
 
-In it is assumed git is installed and you have to already have setted a remote connection with ssh between a remote and local machine.
+It is assumed git is already installed. It is also assumed a ssh connection is already setted between a remote and the local machine.
 The shell commands reported in this tutorial were run in Ubuntu20.04, the git-annex version used is 8.20200226, while git version used was 2.25.1 
 
 ### decentralized git annex repositories setup
@@ -16,7 +16,7 @@ First, git-annex has to be installed in a local machine.
 $ sudo apt-get install git-annex
 ```
 
-Then, let's create a not bare local repository in the home directory:
+Then, let's create a not bare local repository named _trial-annex_ in the home directory :
 ```shell
 $ mkdir ~/trial-annex
 $ cd ~/trial-annex
@@ -32,12 +32,12 @@ Once the repository is created, a .git folder will be created in the correspondi
 ls -a ~/trial-annex
 .  ..  .git
 ```
-To add the files to the git-annex repository, simply copy file in the directory that contains the git annex repository
+To add the files to the git-annex repository simply copy file in the directory that contains the git annex repository.
 ```shell
 $ cd ~/trial-annex
 $ cp ../datasets/brainptm_data_for_optmization/brain_mask_reg_FMRIB58_FA_1mm.nii.gz .
 ```
-Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git annex add <file>". The commit command is instead the same. 
+Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git add <file>". The commit command is instead the same. 
 
 ```shell
 $ git annex add
@@ -58,7 +58,7 @@ The same procedure to add file can be actuated for folders.
 cp -r ~/datasets/brainptm_single_subjs/train/ .
 git annex add train/
 git commit -m "added train folder"
-```shell
+```
 
 The files can be renamed, deleted and moved with the usual git commands. Once the modifications are committed the corresponding symlinks are updated so that the files can be retrieved without errors.
 Example:
