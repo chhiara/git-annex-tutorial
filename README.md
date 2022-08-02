@@ -9,7 +9,7 @@ This brief tutorial aims at illustrating the use-of-case of decentralized data s
 It is assumed git is already installed. It is also assumed a ssh connection is already setted between a remote and the local machine.
 The shell commands reported in this tutorial were run in Ubuntu20.04, the git-annex version used is 8.20200226, while git version used was 2.25.1 
 
-### decentralized git annex repositories setup
+# decentralized git annex repositories setup
 ## set-up git-annex repo on a local machine
 First, git-annex has to be installed in a local machine. 
 ```shell
