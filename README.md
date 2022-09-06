@@ -1,7 +1,7 @@
 # git-annex Tutorial
 git-annex is a software based on git's infrastructure to manage the versioning and the sharing of the files. While git is intended for small text files (typically text containing code), git-annex is designed for bigger files and, in general, for whole datasets. It eases the data sharing between different users, or between different hardware of the same user. The whole documentation is available on the [official git-annex website](https://git-annex.branchable.com/).
 
-This brief tutorial aims at illustrating the use-of-case of decentralized data sharing, where each machine is connected via ssh. **what is decentralized data sharing**. The tutorial assumes familiarity with:
+This brief tutorial aims at illustrating the use-of-case of decentralized data sharing, where each machine is connected via ssh. The tutorial assumes familiarity with:
 * git
 * Linux shell 
 * ssh
@@ -16,12 +16,12 @@ First, git-annex has to be installed in a local machine.
 $ sudo apt-get install git-annex
 ```
 
-Then, let's create a not bare local repository named _trial-annex_ in the home directory :
+Then, let's create a not bare local repository named _data-annex_ in the home directory :
 ```shell
-$ mkdir ~/trial-annex
-$ cd ~/trial-annex
+$ mkdir ~/data-annex/
+$ cd ~/data-annex/
 $ git init
-Initialized empty Git repository in /home/chiara/repo-annex/.git/
+Initialized empty Git repository in /home/user/data-annex/.git/
 $ git annex init
 init  (scanning for unlocked files...)
 ok
@@ -29,12 +29,12 @@ ok
 ```
 Once the repository is created, a .git folder will be created in the corresponding folder:
 ```shell
-ls -a ~/trial-annex
+ls -a ~/data-annex
 .  ..  .git
 ```
 To add the files to the git-annex repository simply copy file in the directory that contains the git annex repository.
 ```shell
-$ cd ~/trial-annex
+$ cd ~/data-annex
 $ cp ../datasets/brainptm_data_for_optmization/brain_mask_reg_FMRIB58_FA_1mm.nii.gz .
 ```
 Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git add <file>". The commit command is instead the same. 
@@ -73,7 +73,7 @@ Enter on your remote machine using ssh:
 ssh user@<remote-ip>
 ```
   
-Clone the repository from the local to the remote host. Let's assume the remote machine on which you are cloning the repository is hosted by your instituition and it ussually called clusterone. You may want to add this name in the description of the repository in the init command, to easily indetify it in the future: 
+Clone the repository from the local to the remote host. Let's assume the remote machine on which you are cloning the repository is hosted by your instituition and it ussually called UniServer. You may want to add this name in the description of the repository in the init command, to easily indentify it in the future: 
  
 ```shell  
 git clone user@<local-ip>:trial-annex trial-annex/
