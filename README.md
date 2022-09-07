@@ -1,7 +1,9 @@
 # git-annex Tutorial
 git-annex is a software based on git's infrastructure to manage the versioning and the sharing of the files. While git is intended for small text files (typically text containing code), git-annex is designed for bigger files and, in general, for whole datasets. It eases the data sharing between different users, or between different hardware of the same user. The whole documentation is available on the [official git-annex website](https://git-annex.branchable.com/).
 
-This brief tutorial aims at illustrating the use-of-case of decentralized data sharing, where each machine is connected via ssh. The tutorial assumes familiarity with:
+This brief tutorial aims at illustrating the use-of-case of decentralized data sharing, where each machine is connected via ssh.
+
+The tutorial assumes familiarity with:
 * git
 * Linux shell 
 * ssh
@@ -105,7 +107,14 @@ After we add files in clusterone, on the contrary we may need to synchronize the
 ```shell  
 git annex sync clusterone
 ```  
- 
+
+
+
+# Examples of use-of-case:
+This type of configuration may be interesting in case we need to store datasets in multiple machines. For example one could have:
+* All the data stored in an office's desktop machine in a git-annex repository.
+* another corresponding remote git-annex repository in a personal laptop computer. Sometimes, at home, you need to visualize some of the data you have previously generated on the office's desktop. You can easily download (get) some of the data, and visualize them on the laptop. Then you can "drop" the files to not occupy memory on your laptop. 
+* a corresponding repository in a Server, containing all the metadata of the whole dataset. Let's assume this is a server with high computational power, but with limited storage capability since it is shared among different users. In some domains, as in the ones that use MRI image data, the images must follow multi-step preprocessing, before being ready for the final high-intensive computation. Hence, often not all of the dataset is needed to be uploaded to the server.  In the git-annex repository, in the server, the data can be stored totally, partially, or not at all, according to the needs. Just before the computation performed by the server is run, specific sets of data can be retrieved with "get". After the computation is ended, space can be freed again dropping the data.
 
   
 References:
