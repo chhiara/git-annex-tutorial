@@ -39,14 +39,14 @@ To add the files to the git-annex repository simply copy file in the directory t
 $ cd ~/data-annex
 $ cp ../datasets/brainptm_data_for_optmization/brain_mask_reg_FMRIB58_FA_1mm.nii.gz .
 ```
-Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git add <file>". The commit command is instead the same. 
+Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git add <file>". The commit command is instead the same as the one in git. 
 
 ```shell
 $ git annex add
 $ git commit -a -m "FA file added"
 ```
 
-When you add a file to the annex and commit it, only a symlink to the content is committed to git. The content itself is stored in .git/annex/objects/
+When you add a file to the annex and commit it, only a symlink to the content is committed to git. The content itself is stored in  the folder .git/annex/objects/
 In fact:
 ```shell
 $ ls -l
@@ -70,7 +70,21 @@ git mv train/ test/
 git commit -m "renamed folder"
 ```
 ## using ssh remotes
-Enter on your remote machine using ssh:
+Now I' ll describe how to configure a clone of the repository on a remote server. For clarity, the commands runned on the remote server will be in red, while the ones runned in the local machine will be in green. 
+
+```diff
+- text in red
++ text in green
+! text in orange
+# text in gray
+@@ text in purple (and bold)@@
+```
+
+First, let's enter on your remote machine using ssh:
+```diff
+@ ssh user@<remote-ip>
+```
+
 ```shell  
 ssh user@<remote-ip>
 ```
