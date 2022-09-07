@@ -13,7 +13,8 @@ The shell commands reported in this tutorial were run in Ubuntu20.04, the git-an
 
 # decentralized git annex repositories setup
 ## set-up git-annex repo on a local machine
-First, git-annex has to be installed in a local machine. 
+
+In all machine we want to use git-annex, the software has to be installed. 
 ```shell
 $ sudo apt-get install git-annex
 ```
@@ -29,16 +30,19 @@ init  (scanning for unlocked files...)
 ok
 (recording state in git...)
 ```
+
 Once the repository is created, a .git folder will be created in the corresponding folder:
 ```shell
 ls -a ~/data-annex
 .  ..  .git
 ```
+
 To add the files to the git-annex repository simply copy file in the directory that contains the git annex repository.
 ```shell
 $ cd ~/data-annex
 $ cp ../datasets/brainptm_data_for_optmization/brain_mask_reg_FMRIB58_FA_1mm.nii.gz .
 ```
+
 Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git add <file>". The commit command is instead the same as the one in git. 
 
 ```shell
@@ -62,15 +66,17 @@ git annex add train/
 git commit -m "added train folder"
 ```
 
-The files can be renamed, deleted and moved with the usual git commands. Once the modifications are committed the corresponding symlinks are updated so that the files can be retrieved without errors.
+The files can be renamed, deleted and moved inside the repository with the usual git commands. Once modifications are committed the corresponding symlinks are updated so that the files can be retrieved without errors.
 Example:
  
 ```shell  
 git mv train/ test/
 git commit -m "renamed folder"
 ```
+ 
+ 
 ## using ssh remotes
-Now I' ll describe how to configure a clone of the repository on a remote server. For clarity, the commands runned on the remote server will be in red, while the ones runned in the local machine will be in green. 
+Now I' ll describe how to configure a clone of the repository on a remote server. For clarity, from now on the commands runned on the remote server will be in purple, while the ones runned in the local machine will be in grey. 
 
 ```diff
 - text in red
@@ -81,43 +87,46 @@ Now I' ll describe how to configure a clone of the repository on a remote server
 ```
 
 First, let's enter on your remote machine using ssh:
-```diff
-@ ssh user@<remote-ip>
-```
 
 ```shell  
 ssh user@<remote-ip>
 ```
-  
-Clone the repository from the local to the remote host. Let's assume the remote machine on which you are cloning the repository is hosted by your instituition and it ussually called UniServer. You may want to add this name in the description of the repository in the init command, to easily indentify it in the future: 
+From now on you are connected on the remonte machine and the following commands will be runned on this machine.
+Let's clone the repository from the local to the remote server. Let's assume the remote machine on which you are cloning the repository is hosted by your University and it ussually called UniServer. You may want to add this name in the description of the repository in the init command, to easily indentify it in the future: 
  
+
 ```shell  
-git clone user@<local-ip>:trial-annex trial-annex/
-git annex init "remote clusterone gitannex"
+git clone user@<local-ip>:data-annex data-annex/
+git annex init "UniServer repo gitannex"
 ```
  
-Then, it is useful to add the repository on your local machine as git remote. Let's call your local machine mydesktop
-```shell  
-git remote add my-desktop user@<local-ip>:trial-annex/
-```
+Then, in the UniServer repository it is useful to add the corresponding repository on your local machine as git remote. Let's call your local machine mydesktop.
  
-The same should be done in the reository on yout local machine: Clusterone has to be added as git remote.
 ```shell  
-git remote add clusterone user@<remote-ip>:/home/user/trial-annex/
+git remote add my-desktop user@<local-ip>:data-annex/
 ```
-It is possible that you type incorrectly the path to your remotes in the previous commands. If this happens, it is necessary only to remove the remote and re-define it. To remove the remote:
+
+The same should be done in the reository on yout local machine: UniServer has to be added as git remote. This command is run on the local repository.
+```shell  
+git remote add uniserver user@<remote-ip>:/home/user/data-annex/
+```
+It is possible that you type incorrectly the path to your remotes in the previous commands. If this happens, you can easily remove the remote and re-add it with the previous command. To remove the remote:
 ```shell  
 git remote remove <name-remote>
 ```
-
-"Notice that these repos are set up as remotes of one another. This lets either get annexed files from the other. You'll often want to do that even when you are using git in a more centralized fashion."
+You can notice that these repositories are set as being remote of one another. In this way you can get annexed files from one to the other or vice versa: the data are not managed centrally by a single repository. 
  
-Now in the repository in clusterone the actual files are not stored. Each file is a broken symlink that points to.. nothing. 
+Now in the repository UniServer the actual files are not stored. Each file is a broken symlink that points to.. nothing. 
 To get the actual contents of the repository it is necessary to synchronize the content on clusterone with the local repository. So on clusterone let's type:
 ```shell  
 git annex sync my-desktop
 ```  
-After we add files in clusterone, on the contrary we may need to synchronize the content on your local machine. So it is sufficient to type inside the repo on you local machine:
+This commands do not trasfer actual data, but only update the metadata. Each time we annex and commit new data on a repository the sync command update the metadata of the new commits. 
+Then, we need to retrieve the actual data on the UniServer. To do so we can use the get command:
+
+ 
+ 
+ After we add files in clusterone, on the contrary we may need to synchronize the content on your local machine. So it is sufficient to type inside the repo on you local machine:
 ```shell  
 git annex sync clusterone
 ```  
