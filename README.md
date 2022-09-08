@@ -1,7 +1,7 @@
 # git-annex Tutorial
 git-annex is a software based on git's infrastructure to manage the versioning and the sharing of files. While git is intended for small text files (typically text containing code), git-annex is designed for bigger files and, in general, for whole datasets. It eases the data sharing between different users, or between different hardware of the same user. The whole documentation is available on the [official git-annex website](https://git-annex.branchable.com/).
 
-This brief tutorial aims at illustrating the use-of-case of decentralized data sharing, where each machine is connected via ssh.
+This brief tutorial aims at illustrating the use-of-case of decentralized data sharing, where each machine is connected via ssh. Moreover, the most commonly used git annex's commands are presented.
 
 The tutorial assumes familiarity with:
 * git
@@ -9,7 +9,7 @@ The tutorial assumes familiarity with:
 * ssh
 
 It is assumed git is already installed. It is also assumed an ssh connection is already set between a remote and the local machine.
-The shell commands reported in this tutorial were run in Ubuntu20.04, the git-annex version used is 8.20200226, while the git version used was 2.25.1 
+The shell commands reported in this tutorial were run in Ubuntu20.04, the git-annex version used was 8.20200226, while the git version used was 2.25.1 
 
 # decentralized git annex repositories setup
 ### set-up git-annex repo on a local machine
@@ -44,7 +44,7 @@ $ cd ~/data-annex
 $ cp ../datasets/brainptm_data_for_optmization/brain_mask_reg_FMRIB58_FA_1mm.nii.gz .
 ```
 
-Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add files is <code>git annex add <file> </code>, that differs from the git command <code>git add <file> </code>. The <code>git commit<file></code> command is instead the same as the one in git. 
+Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add files is <code>git annex add <file> </code>, that differs from the git command <code>git add <file> </code>. The <code>git commit<file></code> command is instead the same as in git. 
 
 ```shell
 $ git annex add brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
@@ -68,7 +68,8 @@ $ git commit -m "added train folder"
 ### fixing symlinks to files
 The files can be renamed, deleted, and moved inside the repository with the usual git commands. After moving files, the symlinks may be broken. You can fix them either with the command <code> git-annex fix <file> </code> , or committing the changes. In both cases symlinks are updated  so that the files can be retrieved without errors.
 Examples:
-* Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz inside the repository from /home/chiara/data-annex/ to /home/chiara/data-annex/test/case_2/ and fixing the symlinks with <code>git annex fix</code>: 
+
+* Moving a file and fixing the symlinks with <code>git annex fix</code> 
 ```shell  
 $ cd /home/chiara/data-annex/
 $ git mv brain_mask_reg_FMRIB58_FA_1mm.nii.gz  test/case_2/
@@ -76,7 +77,7 @@ $ git annex fix
   fix test/case_2/brain_mask_reg_FMRIB58_FA_1mm.nii.gz ok
  (recording state in git...)
 ```
-* Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz backwards  from /home/chiara/data-annex/test/case_2/ to /home/chiara/data-annex/ and fixing the symlinks committing the changes: 
+* Moving a file and fixing the symlinks commit the changes
 ```shell  
 $ cd /home/chiara/data-annex/test/case_2/
 $ git mv brain_mask_reg_FMRIB58_FA_1mm.nii.gz ./../../
@@ -89,11 +90,11 @@ $ git commit -m "moved file "
 ### clone a repository
 Now I'll describe how to configure a clone of the repository on a remote server. Let's assume the remote machine on which we are cloning the repository is hosted by your University and it is called UniServer.
   
-First, let's enter on your remote machine using ssh:
+First, let's enter on UniServer using ssh:
 ```shell  
 $ ssh user@<remote-ip>
 ```
-From now on, we are connected to the remote machine and the following commands will be run on this machine.
+From now on, we are connected remotly to UniServer and the following commands will be run on this machine.
 
 Let's clone the repository from the local to the remote server.  Then, we may want to add the name "UniServer" in the description of the repository in the init command, to easily identify it in the future: 
 
@@ -173,7 +174,7 @@ $ git annex drop brain_mask_reg_FMRIB58_FA_1mm.nii.gz
 ```  
 # Other useful commands
 ### lock, unlock files
-Files that are annexed to the repository are "locked" so that modifications can be done only if they are unlocked with the command <code>git annex unlock </code>.
+By defualt, files annexed to the repository are "locked": modifications can be done only if they are unlocked with the command <code>git annex unlock </code>.
 Let's create and add a new file to the repository, and try to modify it. We can't since it is locked:
  
 ```shell  
@@ -225,8 +226,8 @@ $ cp -L brain_mask_reg_FMRIB58_FA_1mm.nii.gz /home/chiara/
 # use cases examples :
 This type of configuration may be interesting in case we need to store datasets in multiple machines. For example one could have:
 * All the data stored in an office's desktop machine in a git-annex repository.
-* another corresponding remote git-annex repository in a personal laptop computer. Sometimes, at home, you need to visualize some of the data you have previously generated on the office's desktop. You can easily download (get) some of the data, and visualize them on the laptop. Then you can "drop" the files to not occupy memory on your laptop. 
-* a corresponding repository in a Server, containing all the metadata of the whole dataset. Let's assume this is a server with high computational power but with limited storage capability since it is shared among different users. In some domains, as in the ones that use MRI image data, the images must be pre-processed, before being ready for the final high-intensive computation. Hence, not all of the dataset is needed to be uploaded to the server.  In the git-annex repository in the server, the data can be stored totally, partially, or not at all, according to the needs. Before running computations on the server, specific sets of data can be retrieved with "get". Once the computation is ended, space can be freed again dropping the data.
+* Another corresponding remote git-annex repository in a personal laptop computer. Sometimes, at home, you need to visualize some of the data you have previously generated on the office's desktop. You can easily download (get) some of the data, and visualize them on the laptop. Then you can "drop" the files to not occupy memory on your laptop. 
+* A corresponding repository in a Server, containing all the metadata of the whole dataset. Let's assume this is a server with high computational power but with limited storage capability since it is shared among different users. In some domains, as in the ones that use MRI image data, the images must be pre-processed, before being ready for the final high-intensive computation. Hence, not all of the dataset is needed to be uploaded to the server.  In the git-annex repository in the server, the data can be stored totally, partially, or not at all, according to the needs. Before running computations on the server, specific sets of data can be retrieved with "get". Once the computation is ended, space can be freed again dropping the data.
 
   
 ## References:
