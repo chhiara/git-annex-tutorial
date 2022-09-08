@@ -12,7 +12,7 @@ It is assumed git is already installed. It is also assumed a ssh connection is a
 The shell commands reported in this tutorial were run in Ubuntu20.04, the git-annex version used is 8.20200226, while git version used was 2.25.1 
 
 # decentralized git annex repositories setup
-## set-up git-annex repo on a local machine
+### set-up git-annex repo on a local machine
 
 In all machine we want to use git-annex, the software has to be installed. 
 ```shell
@@ -36,14 +36,14 @@ Once the repository is created, a .git folder will be created in the correspondi
 ls -a ~/data-annex
 .  ..  .git
 ```
-
-To add the files to the git-annex repository simply copy file in the directory that contains the git annex repository.
+### add files
+To add the files to the git-annex repository simply copy files in the directory that contains the git annex repository.
 ```shell
 $ cd ~/data-annex
 $ cp ../datasets/brainptm_data_for_optmization/brain_mask_reg_FMRIB58_FA_1mm.nii.gz .
 ```
 
-Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git add <file>". The commit command is instead the same as the one in git. 
+Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add files is <code>git annex add <file> </code>, that differs from the git command <code>git add <file> </code>. The <code>git commit<file></code> command is instead the same as the one in git. 
 
 ```shell
 $ git annex add brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
@@ -64,11 +64,11 @@ cp -r ~/datasets/brainptm_single_subjs/train/ .
 git annex add train/
 git commit -m "added train folder"
 ```
-
-The files can be renamed, deleted and moved inside the repository with the usual git commands. After moving files the symlinks may be broken. You can fix them either with the command git-annex fix, or committing the changes. In both cases symlinks are updated so that the files can be retrieved without errors.
+### fixing symlinks to files
+The files can be renamed, deleted and moved inside the repository with the usual git commands. After moving files the symlinks may be broken. You can fix them either with the command <code> git-annex fix <file> </code> , or committing the changes. In both cases symlinks are updated so that the files can be retrieved without errors.
 Example:
 
-Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz inside the repository from /home/chiara/data-annex/ to /home/chiara/data-annex/test/case_2/: 
+Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz inside the repository from /home/chiara/data-annex/ to /home/chiara/data-annex/test/case_2/ and fixing the symlinks with <code>git annex fix</code>: 
 ```shell  
 cd /home/chiara/data-annex/
 git mv brain_mask_reg_FMRIB58_FA_1mm.nii.gz  test/case_2/
@@ -76,7 +76,7 @@ git annex fix
  fix test/case_2/brain_mask_reg_FMRIB58_FA_1mm.nii.gz ok
 (recording state in git...)
 ```
-Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz backwards  from /home/chiara/data-annex/test/case_2/ to /home/chiara/data-annex/: 
+Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz backwards  from /home/chiara/data-annex/test/case_2/ to /home/chiara/data-annex/ and fixing the symlinks committing the changes: 
 ```shell  
 cd /home/chiara/data-annex/test/case_2/
 git mv brain_mask_reg_FMRIB58_FA_1mm.nii.gz ./../../
@@ -86,7 +86,9 @@ git commit -m "moved file "
 ```
  
 ## using ssh remotes
-Now I' ll describe how to configure a clone of the repository on a remote server. For clarity, from now on the commands runned on the remote server will be in purple, while the ones runned in the local machine will be in grey. 
+Now I' ll describe how to configure a clone of the repository on a remote server.
+ 
+%For clarity, from now on the commands runned on the remote server will be in purple, while the ones runned in the local machine will be in grey. 
 
 ```diff
 - text in red
@@ -101,15 +103,13 @@ First, let's enter on your remote machine using ssh:
 ```shell  
 ssh user@<remote-ip>
 ```
-From now on you are connected on the remonte machine and the following commands will be runned on this machine.
-Let's clone the repository from the local to the remote server. Let's assume the remote machine on which you are cloning the repository is hosted by your University and it ussually called UniServer. You may want to add this name in the description of the repository in the init command, to easily indentify it in the future: 
- 
+From now on you are connected on the remote machine and the following commands will be runned on this machine.
+Let's clone the repository from the local to the remote server. Let's assume the remote machine on which you are cloning the repository is hosted by your University and it is ussually called UniServer. You may want to add this name in the description of the repository in the init command, to easily indentify it in the future: 
 
 ```shell  
 git clone user@<local-ip>:data-annex data-annex/
 git annex init "UniServer repo gitannex"
 ```
- 
 Then, in the UniServer repository it is useful to add the corresponding repository on your local machine as git remote. Let's call your local machine mydesktop.
  
 ```shell  
