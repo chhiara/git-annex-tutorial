@@ -87,15 +87,15 @@ $ git commit -m "moved file "
  
 # using ssh remotes
 ### clone a repository
-Now I'll describe how to configure a clone of the repository on a remote server.
-
+Now I'll describe how to configure a clone of the repository on a remote server. Let's assume the remote machine on which we are cloning the repository is hosted by your University and it is called UniServer.
+  
 First, let's enter on your remote machine using ssh:
-
 ```shell  
 $ ssh user@<remote-ip>
 ```
 From now on, we are connected to the remote machine and the following commands will be run on this machine.
-Let's clone the repository from the local to the remote server. Let's assume the remote machine on which we are cloning the repository is hosted by your University and it is usually called UniServer. We may want to add this name in the description of the repository in the init command, to easily identify it in the future: 
+
+Let's clone the repository from the local to the remote server.  Then, we may want to add the name "UniServer" in the description of the repository in the init command, to easily identify it in the future: 
 
 ```shell  
 $ git clone user@<local-ip>:data-annex data-annex/
