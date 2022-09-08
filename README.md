@@ -77,7 +77,7 @@ $ git annex fix
   fix test/case_2/brain_mask_reg_FMRIB58_FA_1mm.nii.gz ok
  (recording state in git...)
 ```
-* Moving a file and fixing the symlinks commit the changes
+* Moving a file and fixing the symlinks committing the changes
 ```shell  
 $ cd /home/chiara/data-annex/test/case_2/
 $ git mv brain_mask_reg_FMRIB58_FA_1mm.nii.gz ./../../
@@ -88,7 +88,7 @@ $ git commit -m "moved file "
  
 # using ssh remotes
 ### clone a repository
-Now I'll describe how to configure a clone of the repository on a remote server. Let's assume the remote machine on which we are cloning the repository is hosted by your University and it is called UniServer.
+Now I'll describe how to configure a clone of the repository on a remote server. Let's assume the remote server is hosted by the University and it is called UniServer.
   
 First, let's enter on UniServer using ssh:
 ```shell  
@@ -96,7 +96,7 @@ $ ssh user@<remote-ip>
 ```
 From now on, we are connected remotly to UniServer and the following commands will be run on this machine.
 
-Let's clone the repository from the local to the remote server.  Then, we may want to add the name "UniServer" in the description of the repository in the init command, to easily identify it in the future: 
+Let's clone the repository from the local to the remote server.  Then, we may want to add the description "UniServer repo gitannex" in the init command, to easily identify the repository in the future: 
 
 ```shell  
 $ git clone user@<local-ip>:data-annex data-annex/
@@ -105,7 +105,7 @@ $ git annex init "UniServer repo gitannex"
 ```
 
 ### adding remotes
-Then, in the UniServer repository, it is useful to add the corresponding repository on your local machine as a git remote. Let's call your local machine my-desktop.
+Then, in the UniServer repository, it is useful to add the corresponding repository on your local machine as a git remote. Let's call this remote, stored in your local machine, my-desktop.
  
 ```shell  
 $ git remote add my-desktop user@<local-ip>:data-annex/
