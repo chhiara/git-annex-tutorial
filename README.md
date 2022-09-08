@@ -86,6 +86,7 @@ git commit -m "moved file "
 ```
  
 ## using ssh remotes
+### clone a repository
 Now I' ll describe how to configure a clone of the repository on a remote server.
  
 %For clarity, from now on the commands runned on the remote server will be in purple, while the ones runned in the local machine will be in grey. 
@@ -107,38 +108,79 @@ From now on you are connected on the remote machine and the following commands w
 Let's clone the repository from the local to the remote server. Let's assume the remote machine on which you are cloning the repository is hosted by your University and it is ussually called UniServer. You may want to add this name in the description of the repository in the init command, to easily indentify it in the future: 
 
 ```shell  
+
 git clone user@<local-ip>:data-annex data-annex/
+cd data-annex/
 git annex init "UniServer repo gitannex"
 ```
+
+### adding remotes
+
 Then, in the UniServer repository it is useful to add the corresponding repository on your local machine as git remote. Let's call your local machine mydesktop.
  
 ```shell  
 git remote add my-desktop user@<local-ip>:data-annex/
 ```
-
-The same should be done in the reository on yout local machine: UniServer has to be added as git remote. This command is run on the local repository.
+The same should be done in the repository on your local machine: UniServer has to be added as git remote. This command is run on the local repository.
 ```shell  
-git remote add uniserver user@<remote-ip>:/home/user/data-annex/
+git remote add uniserver <user>@<remote-ip>:/home/chiara/data-annex/
 ```
 It is possible that you type incorrectly the path to your remotes in the previous commands. If this happens, you can easily remove the remote and re-add it with the previous command. To remove the remote:
 ```shell  
 git remote remove <name-remote>
 ```
 You can notice that these repositories are set as being remote of one another. In this way you can get annexed files from one to the other or vice versa: the data are not managed centrally by a single repository. 
- 
-Now in the repository UniServer the actual files are not stored. Each file is a broken symlink that points to.. nothing. 
-To get the actual contents of the repository it is necessary to synchronize the content on clusterone with the local repository. So on clusterone let's type:
+
+### sync
+To synchronize the content on UniServer with the local repository we can use the <code>git annex sync <remote-name> </code> command:
 ```shell  
 git annex sync my-desktop
 ```  
-This commands do not trasfer actual data, but only update the metadata. Each time we annex and commit new data on a repository the sync command update the metadata of the new commits. 
-Then, we need to retrieve the actual data on the UniServer. To do so we can use the get command:
+This commands do not trasfer actual data, but only update the metadata. Each time we commit some changes on a repository, to syncronize the changes in metadata also in another repository, we can run the sync command.
 
- 
- 
- After we add files in clusterone, on the contrary we may need to synchronize the content on your local machine. So it is sufficient to type inside the repo on you local machine:
+### get files
+Now in the repository UniServer the actual files are not stored. Only the dataset's metadata are present. Each file is a broken symlink that points to.. nothing. A simple way to check if the symlinks are broken is run the <code>ls</code> command on the file that is pointed by the symlink:
 ```shell  
-git annex sync clusterone
+ls -l brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
+lrwxrwxrwx 1 chiara chiara 202 set  8 14:43 brain_mask_reg_FMRIB58_FA_1mm.nii.gz -> .git/annex/objects/gx/5q/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz
+
+ ls .git/annex/objects/gx/5q/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz
+ls: cannot access '.git/annex/objects/gx/5q/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz': No such file or directory
+```  
+
+To get the actual contents of the repository it is necessary to <code>get</code> the files.
+```shell  
+git annex get brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
+get brain_mask_reg_FMRIB58_FA_1mm.nii.gz (from my-laptop...) 
+chiara@10.31.117.8's password: 
+(checksum...) ok                   
+(recording state in git...)
+```  
+Similarly we can get also whole folders:
+
+```shell  
+ git annex get test/case_4/*
+```  
+
+### drop files
+To free the space in UniServer it may be necessary to delete some data. This can be easily done with the <code>drop</code> command.
+```shell  
+git annex drop brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
+```  
+After this command, the symbolic link is again broken, and points as before to a non-existing file, until the file is added.
+The dropping is a safe operation since, before removing a file,  git-annex checks if in the other repositories the file is still present.
+For instance, if we go to my-desktop's repository, the local repository and we try to drop the same file dropped also in UniServer's repository, we get this message:
+```shell  
+git annex drop brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
+
+drop brain_mask_reg_FMRIB58_FA_1mm.nii.gz (unsafe) 
+  Could only verify the existence of 0 out of 1 necessary copies
+
+  Rather than dropping this file, try using: git annex move
+
+  (Use --force to override this check, or adjust numcopies.)
+failed
+git-annex: drop: 1 failed
 ```  
 
 
