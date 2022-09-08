@@ -46,16 +46,15 @@ $ cp ../datasets/brainptm_data_for_optmization/brain_mask_reg_FMRIB58_FA_1mm.nii
 Similarly to git, to track a file in the repository it is necessary to add the file,  and commit the change. Let's note that the command to add the file is "git annex add <file>", that differs from the git command "git add <file>". The commit command is instead the same as the one in git. 
 
 ```shell
-$ git annex add
-$ git commit -a -m "FA file added"
+$ git annex add brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
+$ git commit -m "brain mask added"
 ```
 
 When you add a file to the annex and commit it, only a symlink to the content is committed to git. The content itself is stored in  the folder .git/annex/objects/
 In fact:
 ```shell
 $ ls -l
-lrwxrwxrwx  1 chiara chiara  202 lug 16 16:46 brain_mask_reg_FMRIB58_FA_1mm.nii.gz -> .git/annex/objects/gx/5q/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz
-drwxr
+lrwxrwxrwx 1 chiara chiara 202 set  8 11:35 brain_mask_reg_FMRIB58_FA_1mm.nii.gz -> .git/annex/objects/gx/5q/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz/SHA256E-s151748--eb27f1988a7cc914ac1fda978514b17066ef089d45a2da9464e5d42426e9f8f1.nii.gz
 ```
 git-annex allows indeed to visualize, navigate and organize the files in tree structure fashion, with directories and subdirectories. The files visualized in this way are, however, only symlink to the actual content of the files, that is stored in the internal directory .git/annex/objects/
 
@@ -66,14 +65,25 @@ git annex add train/
 git commit -m "added train folder"
 ```
 
-The files can be renamed, deleted and moved inside the repository with the usual git commands. Once modifications are committed the corresponding symlinks are updated so that the files can be retrieved without errors.
+The files can be renamed, deleted and moved inside the repository with the usual git commands. After moving files the symlinks may be broken. You can fix them either with the command git-annex fix, or committing the changes. In both cases symlinks are updated so that the files can be retrieved without errors.
 Example:
- 
+
+Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz inside the repository from /home/chiara/data-annex/ to /home/chiara/data-annex/test/case_2/: 
 ```shell  
-git mv train/ test/
-git commit -m "renamed folder"
+cd /home/chiara/data-annex/
+git mv brain_mask_reg_FMRIB58_FA_1mm.nii.gz  test/case_2/
+git annex fix
+ fix test/case_2/brain_mask_reg_FMRIB58_FA_1mm.nii.gz ok
+(recording state in git...)
 ```
- 
+Move the file brain_mask_reg_FMRIB58_FA_1mm.nii.gz backwards  from /home/chiara/data-annex/test/case_2/ to /home/chiara/data-annex/: 
+```shell  
+cd /home/chiara/data-annex/test/case_2/
+git mv brain_mask_reg_FMRIB58_FA_1mm.nii.gz ./../../
+cd ../../../
+git annex add brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
+git commit -m "moved file "
+```
  
 ## using ssh remotes
 Now I' ll describe how to configure a clone of the repository on a remote server. For clarity, from now on the commands runned on the remote server will be in purple, while the ones runned in the local machine will be in grey. 
