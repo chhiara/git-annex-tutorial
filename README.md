@@ -223,7 +223,9 @@ $ git annex whereis brain_mask_reg_FMRIB58_FA_1mm.nii.gz
         2a9ff1a7-202d-4e5b-8dce-d77653ebb461 -- UniServer repo gitannex [uniserver]
     ok
 ```
+  
 ### copy files outside repo
+  
 Sometimes for running some test analysis on some data, may be useful to work with copies of the files. However, if you simply copy symbolic links to outside the repository you can end up with broken links. To solve this issue it is sufficient to add the <code>-L</code> option to the <code> cp</code> command: 
 ```shell  
 $ cp -L brain_mask_reg_FMRIB58_FA_1mm.nii.gz /home/chiara/
