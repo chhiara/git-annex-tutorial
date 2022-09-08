@@ -110,7 +110,7 @@ Then, in the UniServer repository, it is useful to add the corresponding reposit
 ```shell  
 $ git remote add my-desktop user@<local-ip>:data-annex/
 ```
-The same should be done in the repository on your local machine: UniServer has to be added as git remote. This command is run on the local repository.
+The same should be done in the repository on your local machine: UniServer's repository has to be added as git remote. This command is run on the local repository.
 ```shell  
 $ git remote add uniserver <user>@<remote-ip>:/home/chiara/data-annex/
 ```
@@ -158,8 +158,8 @@ It may be necessary to delete some data to free space in UniServer. This can be 
 $ git annex drop brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
 ```  
 After this command, the symbolic link is again broken, and points as before to a non-existing file, until the file is added.
-The dropping is a safe operation since, before removing a file,  git-annex checks if in the other repositories the file is still present.
-For instance, if we go to my-desktop's repository, the local repository and we try to drop the same file we just dropped in UniServer's repository, we get this message:
+The dropping is a safe operation since, before removing a file,  git-annex checks if there exists at least another copy of the file in an another repository.
+For instance, if we go to my-desktop's repository and we try to drop the same file we just dropped in UniServer's repository, we get this message:
 ```shell  
 $ git annex drop brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
  
@@ -197,7 +197,8 @@ $ echo "hello" > newfile.txt
   bash: newfile.txt: Permission denied
 ```  
 ### moving files 
-A useful git-annex command is <code> git annex move <file-name> </code> that permits moving a file from a repository to another. This operation can be also done with a <code>get</code> command (in the destination repository), followed by the <code>drop</code> (in the repository where the content was originally stored) but the <code>move</code> command makes this operation faster:
+A useful git-annex command is <code> git annex move <file-name> </code> that permits moving a file from a repository to another. This operation can be also done with a <code>get</code> command (in the destination repository), followed by the <code>drop</code> (in the repository where the content was originally stored). The <code>move</code> command makes this operation faster.
+  
 For instance, we can move a file from our desktop's repository to the UniServer's repository:
 ```shell  
 $ git annex move brain_mask_reg_FMRIB58_FA_1mm.nii.gz --to uniserver
@@ -207,7 +208,7 @@ $ git annex move brain_mask_reg_FMRIB58_FA_1mm.nii.gz --to uniserver
 ```
   
 ### whereis
-The <code> git annex whereis <file-name> permits to understand in which (remote) repository a file is stored.  
+The <code> git annex whereis <file-name> </code> command permits to understand in which (remote) repository a file is stored.  
 ```shell  
 $ git annex whereis brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
     whereis brain_mask_reg_FMRIB58_FA_1mm.nii.gz (1 copy) 
@@ -216,7 +217,7 @@ $ git annex whereis brain_mask_reg_FMRIB58_FA_1mm.nii.gz
 ```
   
 ### copy files outside repo
-Sometimes for running some test analysis on some data, it may be useful to work with copies of the files outside the repository. However, if we copy symbolic links outside the repository, we can end up with broken links. To solve this issue it is sufficient to add the <code>-L</code> option to the <code> cp</code> command: 
+Sometimes for running some test analysis, it may be useful to work with copies of the files outside the repository. However, if we copy symbolic links outside the repository, we can end up with broken links. To solve this issue it is sufficient to add the <code>-L</code> option to the <code> cp</code> command: 
   
 ```shell  
 $ cp -L brain_mask_reg_FMRIB58_FA_1mm.nii.gz /home/chiara/
