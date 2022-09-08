@@ -85,7 +85,7 @@ $ git annex add brain_mask_reg_FMRIB58_FA_1mm.nii.gz
 $ git commit -m "moved file "
 ```
  
-## using ssh remotes
+# using ssh remotes
 ### clone a repository
 Now I'll describe how to configure a clone of the repository on a remote server.
 
@@ -171,7 +171,7 @@ $ git annex drop brain_mask_reg_FMRIB58_FA_1mm.nii.gz
   failed
   git-annex: drop: 1 failed
 ```  
-## Useful commands
+# Useful commands
 ### lock, unlock files
 Files that are annexed to the repository are "locked" so that modifications can be done only if they are unlocked with the command <code>git annex unlock </code>.
 Let's create and add a new file to the repository, and try to modify it. We can't since it is locked:
