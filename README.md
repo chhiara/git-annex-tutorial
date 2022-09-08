@@ -214,7 +214,22 @@ $ git annex move brain_mask_reg_FMRIB58_FA_1mm.nii.gz --to uniserver
   ok                                
   (recording state in git...)
 ```
- 
+  
+### whereis
+The <code> git annex whereis <file-name> permits to understand in which (remote) repository a file is stored.  
+```shell  
+$ git annex whereis brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
+    whereis brain_mask_reg_FMRIB58_FA_1mm.nii.gz (1 copy) 
+        2a9ff1a7-202d-4e5b-8dce-d77653ebb461 -- UniServer repo gitannex [uniserver]
+    ok
+```
+### copy files outside repo
+Sometimes for running some test analysis on some data, may be useful to work with copies of the files. However, if you simply copy symbolic links to outside the repository you can end up with broken links. To solve this issue it is sufficient to add the <code>-L</code> option to the <code> cp</code> command: 
+```shell  
+$ cp -L brain_mask_reg_FMRIB58_FA_1mm.nii.gz /home/chiara/
+```
+  
+  
 # Examples of use-of-case:
 This type of configuration may be interesting in case we need to store datasets in multiple machines. For example one could have:
 * All the data stored in an office's desktop machine in a git-annex repository.
