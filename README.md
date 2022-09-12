@@ -142,7 +142,6 @@ To get the actual contents of the repository it is necessary to <code>get</code>
 ```shell  
 $ git annex get brain_mask_reg_FMRIB58_FA_1mm.nii.gz 
   get brain_mask_reg_FMRIB58_FA_1mm.nii.gz (from my-laptop...) 
-  chiara@10.31.117.8's password: 
   (checksum...) ok                   
   (recording state in git...)
 ```  
