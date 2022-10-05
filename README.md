@@ -221,8 +221,19 @@ Sometimes for running some test analysis, it may be useful to work with copies o
 ```shell  
 $ cp -L brain_mask_reg_FMRIB58_FA_1mm.nii.gz /home/chiara/
 ```
-  
-  
+
+### Show history
+To show location history of a file in each repository:
+```shell  
+$ git annex log <path-to-file>
+```
+
+To show commits' history:
+```shell  
+$ git log 
+```
+
+
 # use cases examples :
 This type of configuration may be interesting in case we need to store datasets in multiple machines. For example one could have:
 * All the data stored in an office's desktop machine in a git-annex repository.
